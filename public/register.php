@@ -1,18 +1,11 @@
 <?php
-
- 
     require("../includes/config.php");
-
     if ($_SERVER["REQUEST_METHOD"] == "GET")
     {
-
         render("register_form.php", ["title" => "Register"]);
     }
-
-
     else if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
-   
         if (empty($_POST["username"]))
         {
             apologize("You must provide your username.");
@@ -30,8 +23,8 @@
             apologize("You must provide same passwords.");
         }
         
-
-        $rows = CS50::query("INSERT IGNORE INTO users (username, hash, cash) VALUES(?, ?, 10000.0000)", $_POST["username"], password_hash($_POST["password"], PASSWORD_DEFAULT));
+        # adding new user into the user table
+        $rows = CS50::query("INSERT IGNORE INTO users (username, hash, cash) VALUES(?, ?, 0.00)", $_POST["username"], password_hash($_POST["password"], PASSWORD_DEFAULT));
         
         if($rows == false)
         {
@@ -39,7 +32,7 @@
         }
         else
         {
-
+           # sets the id queal to which number the user was added into the database
             $rows = CS50::query("SELECT LAST_INSERT_ID() AS id");
             
 
