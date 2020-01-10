@@ -1,29 +1,20 @@
 
-
-DROP TABLE IF EXISTS `history`;
-
-CREATE TABLE `history` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `transaction` tinyint(1) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+-- creating a table where transactions are registered
+CREATE TABLE `log`(
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10)  NOT NULL,
+  `transaction` int(1) NOT NULL,
+  `time` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `symbol` varchar(255) NOT NULL,
   `shares` int(10) NOT NULL,
-  `price` decimal(65,4) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+  `price` decimal(10,2) unsigned NOT NULL,
+  KEY `user_id` (`user_id`),
+  PRIMARY KEY (`id`)
+  
+);
  
-LOCK TABLES `history` WRITE;
 
-INSERT INTO `history` VALUES (6,30,1,'2016-11-19 17:40:40','FREE',10,1.1500),(7,30,0,'2016-11-19 17:44:52','FREE',10,1.1500),(8,30,1,'2016-11-19 17:46:47','FREE',1,1.1500),(9,30,0,'2016-11-19 18:23:57','FREE',1,1.1500);
-
-UNLOCK TABLES;
-
-
-
-DROP TABLE IF EXISTS `portfolios`;
-
+-- creates another table were aggregated record of the shares each user has is kept
 CREATE TABLE `portfolios` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
@@ -31,26 +22,18 @@ CREATE TABLE `portfolios` (
   `shares` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UIWS` (`user_id`,`symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
+) ;
 
-
-LOCK TABLES `portfolios` WRITE;
- 
-UNLOCK TABLES;
-
-
-
-DROP TABLE IF EXISTS `users`;
-
+-- creating table where user cridentials are stored and used for authentication
 CREATE TABLE `users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `hash` varchar(255) NOT NULL,
-  `cash` decimal(65,4) unsigned NOT NULL DEFAULT '0.0000',
+  `cash` decimal(65,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+);
  
 
 LOCK TABLES `users` WRITE;
